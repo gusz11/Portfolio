@@ -3,6 +3,7 @@ import { ArrowLeft } from "lucide-react";
 import type { Project } from "@/types/project";
 import { Container } from "@/components/layout/Container";
 import { ProjectVisual } from "./ProjectVisual";
+import { getAvailableCoverComposition } from "@/lib/project-utils";
 export function ProjectHero({
   project,
   available,
@@ -47,6 +48,7 @@ export function ProjectHero({
           image={project.cover}
           theme={project.theme}
           available={available}
+          composition={getAvailableCoverComposition(project)}
           priority
         />
       </Container>

@@ -25,6 +25,7 @@ export function ProjectCard({
               image={project.cover}
               theme={project.theme}
               available={available}
+              composition={project.coverComposition}
             />
             <span className="project-cover-action">
               <ArrowUpRight size={23} />

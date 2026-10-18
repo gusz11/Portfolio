@@ -1,0 +1,312 @@
+/* Only OndeFica's cover and real screenshots; the existing project layouts stay intact. */
+.ondefica-cover {
+  background: #becbb9;
+}
+
+/* Internal gallery variant: reuse the real-image renderer and the cover's device frame. */
+.gallery-ondefica .gallery-stage .ondefica-gallery-slide {
+  display: grid;
+  grid-template-columns: 38% 62%;
+  padding: 3cqw;
+  aspect-ratio: 1.48;
+  background: #bdcabb;
+  color: #30432d;
+}
+.ondefica-gallery-route {
+  position: absolute;
+  inset: 0;
+  color: #d5ddca;
+  opacity: 0.6;
+  pointer-events: none;
+}
+.ondefica-gallery-route svg {
+  width: 100%;
+  height: 100%;
+}
+.ondefica-gallery-editorial {
+  position: relative;
+  z-index: 1;
+  align-self: center;
+  min-width: 0;
+  padding-left: 2cqw;
+}
+.ondefica-gallery-category {
+  color: #3b5137;
+  font-size: clamp(12px, 1.35cqw, 17px);
+  margin-bottom: 2cqw;
+  font-weight: 650;
+}
+.ondefica-gallery-editorial h3 {
+  font-size: clamp(28px, 4cqw, 52px);
+  line-height: 1.16;
+  letter-spacing: -0.06em;
+  max-width: 10.5ch;
+}
+.ondefica-gallery-description {
+  color: #40543a;
+  font-size: clamp(13px, 1.45cqw, 18px);
+  line-height: 1.7;
+  margin-top: 2cqw;
+  max-width: 30ch;
+}
+.ondefica-gallery-position {
+  display: block;
+  color: #3b5137;
+  font-size: clamp(11px, 1.15cqw, 14px);
+  margin-top: 4cqw;
+  font-variant-numeric: tabular-nums;
+}
+.ondefica-gallery-position > span {
+  margin-inline: 0.6em;
+}
+.ondefica-gallery-device-area {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 0;
+}
+.ondefica-gallery-device-motion {
+  height: 96%;
+  aspect-ratio: 454 / 955;
+  max-width: 96%;
+}
+.ondefica-gallery-slide .ondefica-device {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  aspect-ratio: auto;
+  padding: 0.65cqw;
+  transform: rotate(var(--gallery-device-angle, 2deg));
+}
+.ondefica-gallery-slide .ondefica-device .real-image.visual-ondefica {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+  border-radius: 2.4cqw;
+  background: #101010;
+}
+.ondefica-gallery-slide
+  .ondefica-device
+  .real-image.visual-ondefica
+  .project-screenshot {
+  position: relative;
+  top: auto;
+  left: auto;
+  transform: none;
+  height: 100%;
+  width: 100%;
+  max-height: none;
+  aspect-ratio: auto;
+  border: 0;
+  border-radius: inherit;
+  box-shadow: none;
+}
+.ondefica-gallery-slide .ondefica-device .project-screenshot img {
+  object-fit: contain;
+}
+.gallery-dialog.ondefica-gallery-dialog {
+  width: min(680px, calc(100% - 24px));
+}
+.ondefica-gallery-dialog .lightbox-content {
+  padding-top: 0;
+}
+.ondefica-gallery-dialog .lightbox-close {
+  display: grid;
+  position: sticky;
+  top: 0;
+  margin: 0 0 12px auto;
+  z-index: 3;
+}
+.gallery-dialog.ondefica-gallery-dialog .real-image.visual-ondefica {
+  width: min(100%, 480px);
+  aspect-ratio: 430 / 931;
+  background: transparent;
+}
+.ondefica-gallery-dialog .real-image.visual-ondefica .project-screenshot {
+  height: 100%;
+  width: 100%;
+  max-height: none;
+  border: 0;
+  box-shadow: none;
+  border-radius: 12px;
+}
+.ondefica-gallery-dialog .gallery-controls {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  background: #11111b;
+  padding-block: 14px 4px;
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .gallery-ondefica .gallery-stage .ondefica-gallery-slide {
+    aspect-ratio: 1.2;
+  }
+}
+@media (max-width: 767px) {
+  .gallery-ondefica .gallery-stage .ondefica-gallery-slide {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    aspect-ratio: auto;
+    padding: 28px 22px 30px;
+  }
+  .ondefica-gallery-editorial {
+    width: 100%;
+    align-self: stretch;
+    padding: 0;
+  }
+  .ondefica-gallery-category {
+    font-size: 12px;
+    margin-bottom: 12px;
+  }
+  .ondefica-gallery-editorial h3 {
+    font-size: 32px;
+    max-width: 13ch;
+    min-height: 2.32em;
+  }
+  .ondefica-gallery-description {
+    font-size: 14px;
+    margin-top: 14px;
+    max-width: 36ch;
+    min-height: 3.4em;
+  }
+  .ondefica-gallery-position {
+    position: absolute;
+    right: 46px;
+    top: 0;
+    margin: 0;
+    font-size: 11px;
+  }
+  .ondefica-gallery-device-area {
+    width: 100%;
+  }
+  .ondefica-gallery-device-motion {
+    width: min(86%, 18rem);
+    height: auto;
+    aspect-ratio: 454 / 955;
+  }
+  .ondefica-gallery-slide .ondefica-device {
+    padding: 6px;
+    border-radius: 27px;
+  }
+  .ondefica-gallery-slide .ondefica-device .real-image.visual-ondefica {
+    border-radius: 20px;
+  }
+}
+@media (max-width: 359px) {
+  .ondefica-gallery-description {
+    min-height: 5.1em;
+  }
+}
+.case-ondefica .case-hero .ondefica-cover {
+  container-type: inline-size;
+}
+.ondefica-cover-map {
+  position: absolute;
+  inset: 0;
+  color: #dae1d0;
+  opacity: 0.9;
+}
+.ondefica-cover-map svg {
+  width: 100%;
+  height: 100%;
+}
+.ondefica-cover-brand {
+  position: absolute;
+  left: 6%;
+  top: 7%;
+  color: #3b5137;
+  line-height: 1.5;
+}
+.ondefica-cover-brand > span {
+  font-family: var(--font-display), sans-serif;
+  font-size: 2.8cqw;
+  letter-spacing: -0.06em;
+  font-weight: 600;
+}
+.ondefica-device {
+  position: absolute;
+  height: 86%;
+  aspect-ratio: 430 / 931;
+  padding: 0.55cqw;
+  border: 0.35cqw solid #53574b;
+  border-radius: 3.2cqw;
+  background: #161813;
+  box-shadow:
+    0.9cqw 2cqw 3cqw #26302138,
+    inset 0 0 0 0.15cqw #949a80;
+}
+.ondefica-device-screen {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 2.35cqw;
+  background: #101010;
+}
+.ondefica-device-screen img {
+  object-fit: cover;
+  object-position: left top;
+}
+.ondefica-device-primary {
+  right: 20%;
+  top: 6%;
+  transform: rotate(7deg);
+  z-index: 2;
+}
+.ondefica-device-secondary {
+  left: 20%;
+  top: 12%;
+  height: 80%;
+  transform: rotate(-9deg);
+}
+.ondefica-cover-caption {
+  position: absolute;
+  bottom: 3%;
+  right: 5%;
+  font-size: 1.15cqw;
+  color: #3b5137;
+}
+.real-image.visual-ondefica {
+  background: #bdcabb;
+}
+.real-image.visual-ondefica .project-screenshot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 90%;
+  max-height: 640px;
+  aspect-ratio: 430 / 931;
+  border: 1px solid #71816c;
+  border-radius: 1.2cqw;
+  overflow: hidden;
+  box-shadow: 0 1.5cqw 3cqw #26302124;
+  background: #101010;
+}
+.real-image.visual-ondefica .project-screenshot img {
+  object-fit: contain;
+}
+.gallery-dialog .real-image.visual-ondefica {
+  width: min(100%, 30dvh);
+  aspect-ratio: 430 / 1000;
+}
+@media (max-width: 767px) {
+  .ondefica-cover-brand > span {
+    font-size: 3.4cqw;
+  }
+  .ondefica-cover-caption {
+    font-size: 1.6cqw;
+  }
+  .ondefica-device-primary {
+    right: 17%;
+  }
+  .ondefica-device-secondary {
+    left: 17%;
+  }
+  .case-ondefica .gallery-stage .real-image.visual-ondefica {
+    aspect-ratio: 430 / 1000;
+  }
+}

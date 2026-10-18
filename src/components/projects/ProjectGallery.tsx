@@ -6,6 +6,7 @@ import type { ProjectImage, ProjectTheme } from "@/types/project";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { ProjectVisual } from "./ProjectVisual";
 import { trapDialogFocus } from "@/lib/focus";
+import { OndeFicaGallerySlide } from "./OndeFicaGallerySlide";
 export function ProjectGallery({
   images,
   theme,
@@ -54,7 +55,7 @@ export function ProjectGallery({
   }
   return (
     <div
-      className="gallery"
+      className={theme === "ondefica" ? "gallery gallery-ondefica" : "gallery"}
       onKeyDown={(event) => {
         if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
           event.preventDefault();
@@ -69,11 +70,21 @@ export function ProjectGallery({
           animate={{ opacity: 1 }}
           transition={{ duration: 0.25 }}
         >
-          <ProjectVisual
-            image={current}
-            theme={theme}
-            available={availableImages.includes(current.path)}
-          />
+          {theme === "ondefica" ? (
+            <OndeFicaGallerySlide
+              image={current}
+              available={availableImages.includes(current.path)}
+              index={index}
+              total={images.length}
+              reducedMotion={reduced}
+            />
+          ) : (
+            <ProjectVisual
+              image={current}
+              theme={theme}
+              available={availableImages.includes(current.path)}
+            />
+          )}
         </motion.div>
         <button
           ref={expand}
@@ -112,7 +123,11 @@ export function ProjectGallery({
       )}
       <dialog
         ref={dialog}
-        className="gallery-dialog"
+        className={
+          theme === "ondefica"
+            ? "gallery-dialog ondefica-gallery-dialog"
+            : "gallery-dialog"
+        }
         aria-label="Imagem ampliada do projeto"
         onKeyDown={trapDialogFocus}
         onClose={() => {

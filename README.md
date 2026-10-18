@@ -35,13 +35,15 @@ npm run build
 npm run test:e2e
 ```
 
-O lint exige zero warnings. Typecheck gera os tipos de rotas antes do `tsc --noEmit`. Os testes E2E usam Playwright com Google Chrome instalado, em modo headless. Iniciam o servidor de produção automaticamente se a porta 3000 não estiver ocupada. Execute o build antes. Para usar o Chromium do Playwright em outra máquina, remova `channel: "chrome"` da configuração e instale o navegador com `npx playwright install chromium`.
+O lint exige zero warnings. Typecheck gera os tipos de rotas antes do `tsc --noEmit`. Os testes E2E usam Playwright com Google Chrome instalado, em modo headless. Iniciam um servidor de produção exclusivo na porta 3100, sem reutilizar nem interromper a prévia de desenvolvimento da porta 3000. Execute o build antes e mantenha a porta 3100 livre. Para usar o Chromium do Playwright em outra máquina, remova `channel: "chrome"` da configuração e instale o navegador com `npx playwright install chromium`.
 
 Execute typecheck e build em sequência: ambos geram arquivos em `.next/types` e não devem rodar ao mesmo tempo.
 
 A suíte cobre filtros, menu mobile, foco, Escape, galeria, navegação entre projetos, metadados, sitemap, robots, imagem Open Graph, 404, movimento reduzido, axe WCAG A/AA e largura de documento em 320, 375, 390, 768, 1024, 1440 e 1920px. Capturas de desktop e mobile são salvas em `test-results/screenshots/`, ignoradas no Git. Verificação automatizada não substitui uma auditoria humana completa de acessibilidade.
 
 ## Estrutura
+
+Validação executada em 18/10/2026: lint sem erros ou warnings, typecheck e build de produção aprovados, 17 testes de navegador aprovados no servidor de produção isolado. A suíte verificou as cinco páginas nas sete larguras listadas, todas as composições de galeria, as sete capturas reais do OndeFica, a capa com dois smartphones, o fallback de imagem, os dados profissionais e o conteúdo sem JavaScript. As capturas de desktop e mobile foram revisadas visualmente. A auditoria de produção executada anteriormente com `npm audit --omit=dev` retornou zero vulnerabilidades.
 
 ```text
 src/
@@ -81,9 +83,11 @@ Sem domínio configurado, o site fica `noindex`, o robots bloqueia indexação e
 
 Consulte [CONTENT_GUIDE.md](CONTENT_GUIDE.md) para editar os dados e [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) para a direção de arte.
 
-- E-mail, LinkedIn, currículo, links de validação e imagens reais não foram fornecidos; as ações correspondentes ficam ocultas até configuração válida.
-- A stack de OndeFica depende de confirmação no repositório. A IA no Dashboard Financeiro está marcada como planejada. O Garago não é apresentado como um fluxo completo de locação e pagamento.
-- Mockups são demonstrações gráficas, não screenshots autênticas nem resultados quantitativos reais.
+- GitHub, LinkedIn e e-mail já estão configurados em `src/data/profile.ts`. As duas certificações têm links de validação Oracle. O currículo ainda precisa ser adicionado.
+- OndeFica tem stack confirmada pelo autor: React Native, Python e FastAPI, com desenvolvimento completo de frontend e backend. O Garago explicita a responsabilidade integral pelo frontend e o backend de outra equipe. No LURIA, a contribuição é em UX/UI, engenharia de frontend e segurança. A IA do Dashboard Financeiro permanece planejada.
+- OndeFica utiliza sete capturas reais e uma capa estilizada com dois smartphones. Os arquivos originais são preservados. As demais capas continuam com os mockups demonstrativos aprovados.
 - A descoberta de imagens acontece no build. Refaça o build após adicionar arquivos em `public`.
 - Fontes precisam de rede no primeiro build. Depois são servidas pela própria aplicação, sem requests do navegador para o Google Fonts.
 - A auditoria inicial encontrou zero vulnerabilidades de produção e cinco alertas altos na cadeia de desenvolvimento `eslint-config-next → fast-glob → micromatch → braces`. A versão publicada de `braces` ainda não oferece correção. Não foi aplicado downgrade incompatível nem `audit fix --force`. ESLint 9 permanece por compatibilidade declarada do plugin React. Reavalie essa cadeia antes de atualizar a ferramenta.
+
+Na verificação pública dos links fornecidos em 18/10/2026, GitHub pessoal, repositório LURIA, aplicação LURIA e as duas credenciais Oracle responderam HTTP 200. Os repositórios `gusz11/OndeFica`, `CaioQC/Garago_Front` e `CaioQC/Garago_Back` responderam HTTP 404 sem autenticação; isso não confirma se são privados ou indisponíveis. O LinkedIn respondeu 403 à consulta automatizada. Os endereços fornecidos foram mantidos, sem substituir por perfis ou projetos de terceiros.

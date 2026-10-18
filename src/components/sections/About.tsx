@@ -29,6 +29,7 @@ export function About() {
               <span>Formação</span>
               <strong>{profile.education.course}</strong>
               <p>{profile.education.institution}</p>
+              <p>{profile.education.period}</p>
             </div>
           </ScrollReveal>
         </div>

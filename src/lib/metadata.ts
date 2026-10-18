@@ -10,6 +10,7 @@ export function pageMetadata(
   return {
     title,
     description,
+    authors: [{ name: profile.fullName, url: profile.github }],
     metadataBase: new URL(siteUrl ?? "http://localhost:3000"),
     alternates: siteUrl ? { canonical: pathname } : undefined,
     robots: { index: Boolean(siteUrl), follow: Boolean(siteUrl) },

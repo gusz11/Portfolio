@@ -39,3 +39,7 @@ GSAP controla a sequência inicial e a timeline com ScrollTrigger, usando contex
 ## Responsividade
 
 Grids passam a uma coluna abaixo de 768px, menu compacto abaixo de 1100px. O hero ganha composição própria no mobile; a escultura é reposicionada e não compete com os textos. Testar 320, 375, 390, 768, 1024, 1440 e 1920px. Não esconder overflow globalmente para mascarar largura errada. Só áreas decorativas têm recorte local.
+
+## Refinamento localizado do OndeFica
+
+A capa reutiliza a direção de arte aprovada: verde suave `#BECBB9`, linhas de rota `#DAE1D0`, detalhes oliva `#637653` e aparelhos escuros `#161813`. Mantém Sora, Manrope, proporções dos cards e animações existentes. Dois smartphones levemente inclinados enquadram as capturas reais de Explorar e Programação, com prioridade visual para Explorar. A alternativa de usar apenas um print plano foi descartada para preservar a profundidade e a linguagem das capas. A galeria exibe os sete arquivos originais inteiros. CSS específico em `src/styles/ondefica.css`, sem alterar Hero, Garago ou tokens globais.

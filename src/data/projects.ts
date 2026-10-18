@@ -8,6 +8,44 @@ function shot(folder: string, file: string, label: string): ProjectImage {
   };
 }
 
+const ondeFicaGallery: ProjectImage[] = [
+  {
+    path: "/images/projects/ondefica/01-explorar.jpg",
+    label: "Explorar Brasília",
+    alt: "Tela Explorar do OndeFica com busca, categorias e Museu Nacional da República",
+  },
+  {
+    path: "/images/projects/ondefica/02-detalhes-catedral.jpg",
+    label: "Detalhes da Catedral",
+    alt: "Tela de detalhes da Catedral de Brasília, com foto, informações de visitação e acesso à programação",
+  },
+  {
+    path: "/images/projects/ondefica/03-login.jpg",
+    label: "Login",
+    alt: "Tela de login do OndeFica com campos de e-mail e senha",
+  },
+  {
+    path: "/images/projects/ondefica/04-favoritos.jpg",
+    label: "Favoritos",
+    alt: "Tela de lugares salvos do OndeFica, com Museu Nacional e Catedral de Brasília",
+  },
+  {
+    path: "/images/projects/ondefica/05-programacao.jpg",
+    label: "Programação",
+    alt: "Programação de uma viagem no OndeFica, com visitas, indicadores e exportação para PDF",
+  },
+  {
+    path: "/images/projects/ondefica/06-roteiro-do-dia.jpg",
+    label: "Roteiro do dia",
+    alt: "Roteiro diário do OndeFica com Museu Nacional, Catedral e Congresso Nacional organizados por horário",
+  },
+  {
+    path: "/images/projects/ondefica/07-configuracoes.jpg",
+    label: "Configurações",
+    alt: "Tela de configurações do OndeFica com conta, aparência e preferências de viagem",
+  },
+];
+
 export const projects: Project[] = [
   {
     slug: "luria",
@@ -17,17 +55,17 @@ export const projects: Project[] = [
     filters: ["Web"],
     theme: "luria",
     description:
-      "Plataforma educacional com ambientes de estudo e trabalho, simulações médicas e interfaces voltadas à aprendizagem.",
+      "Plataforma voltada à formação médica, com ambientes de estudo, trabalho e simulação. Atuação em frontend, UX/UI e segurança.",
     status: "Em evolução",
-    role: "Evolução de interfaces, UX/UI e segurança frontend",
+    role: "Engenharia de frontend, UX/UI e segurança",
     stack: ["HTML", "CSS", "JavaScript"],
     cover: shot("luria", "cover", "Plataforma educacional e simulação médica"),
     overview:
-      "O LURIA reúne diferentes ambientes de estudo e trabalho, incluindo recursos de aprendizagem e simulação de situações de emergência. Minha atuação passa pela evolução de interfaces, padronização visual, navegação, responsividade, segurança e testes.",
+      "O LURIA é uma plataforma educacional voltada à formação médica, com ambientes de estudo, trabalho e simulação. Minha contribuição se concentrou na definição e evolução da identidade visual, no design e desenvolvimento de interfaces e em melhorias de funcionalidades e segurança frontend.",
     problem:
       "Uma plataforma com muitos ambientes exige uma linguagem de interface consistente. O desafio é tornar a navegação entre conteúdos, ferramentas de estudo e simulações mais clara, sem perder o contexto de cada atividade.",
     solution:
-      "A evolução das interfaces combina organização de CSS, componentes compartilhados e ajustes de UX/UI. A revisão de segurança e as validações acompanham esse trabalho. Os ambientes têm estágios distintos de desenvolvimento; a presença de um módulo não significa que ele esteja concluído ou homologado.",
+      "Desenvolvimento e refinamento de layouts, padronização de componentes e ajustes de responsividade, acompanhados da correção de falhas de interface e de funcionalidades existentes. A atuação também inclui identificação e correção de vulnerabilidades, revisão de CSP, testes e validações das correções. Esse trabalho não representa a criação integral da plataforma ou de seu backend, nem uma homologação definitiva.",
     features: [
       "Ambiente educacional",
       "Ambiente de trabalho",
@@ -43,15 +81,15 @@ export const projects: Project[] = [
     technical: [
       {
         title: "Uma linguagem, diferentes ambientes",
-        body: "Organização e padronização do CSS e de componentes compartilhados para dar continuidade visual aos fluxos de estudo e trabalho.",
+        body: "Definição e evolução da identidade visual, design de interfaces, refinamento de layouts e padronização de componentes. Organização do CSS e ajustes de responsividade conectam os diferentes ambientes.",
       },
       {
-        title: "Simulação com foco na experiência",
-        body: "O ambiente de emergência faz parte da plataforma. O trabalho de interface busca tornar a leitura das informações e a navegação durante a simulação mais claras.",
+        title: "Interfaces e funcionalidades em evolução",
+        body: "Correção de falhas de interface e de funcionalidades existentes, com testes e validações das alterações. O trabalho de UX/UI busca melhorar a navegação e a leitura das informações, incluindo o ambiente de simulação de emergência.",
       },
       {
         title: "Segurança também é frontend",
-        body: "Revisão de políticas CSP e proteções contra conteúdo HTML não confiável, acompanhada de testes e validações. Essas frentes fazem parte da evolução, sem alegar uma auditoria ou homologação completa.",
+        body: "Identificação e correção de vulnerabilidades, melhorias de segurança frontend e revisão e aplicação de políticas CSP. Testes acompanham as funcionalidades corrigidas, sem alegar auditoria de segurança completa ou homologação definitiva.",
       },
     ],
     nextSteps: [
@@ -63,7 +101,10 @@ export const projects: Project[] = [
       shot("luria", "simulator", "Simulador de emergência"),
       shot("luria", "education", "Recursos de aprendizagem"),
     ],
-    links: [],
+    links: [
+      { label: "Repositório", href: "https://github.com/arantes225/luria" },
+      { label: "Acessar aplicação", href: "https://www.resibulando.online" },
+    ],
   },
   {
     slug: "dashboard-financeiro",
@@ -130,13 +171,13 @@ export const projects: Project[] = [
     description:
       "Aplicativo que conecta moradores para anunciar, encontrar e alugar vagas de garagem e armários no condomínio.",
     status: "Em desenvolvimento",
-    role: "Frontend mobile",
+    role: "Desenvolvimento integral do frontend mobile",
     stack: ["React Native", "Expo", "TypeScript"],
     stackNote:
-      "Backend do projeto: Java e Spring Boot. Minha atuação se concentra no frontend mobile e na integração com os serviços.",
+      "Fui responsável por todo o frontend em React Native, com Expo e TypeScript. O backend em Java e Spring Boot foi desenvolvido por outra equipe.",
     cover: shot("garago", "cover", "Locação de vagas e armários"),
     overview:
-      "O Garago propõe aproximar moradores que têm espaços disponíveis daqueles que precisam de uma vaga de garagem ou de um armário no condomínio. Meu foco é a experiência no aplicativo, desde o acesso até as interfaces de anúncios e a integração com o backend.",
+      "O Garago conecta moradores interessados em anunciar e encontrar vagas de garagem e armários no condomínio. Fui responsável por todo o desenvolvimento frontend em React Native, incluindo telas, componentes reutilizáveis, navegação, formulários e integração com os serviços backend.",
     problem:
       "Encontrar e anunciar espaços disponíveis dentro de um condomínio exige contexto: quem é o morador, qual é o condomínio e quais espaços estão disponíveis. O desafio é conectar essas informações em uma experiência mobile clara.",
     solution:
@@ -155,15 +196,15 @@ export const projects: Project[] = [
     technical: [
       {
         title: "Uma experiência pensada para o morador",
-        body: "As telas mobile conectam acesso, informações do condomínio e anúncios. A organização dos fluxos busca reduzir dúvidas na navegação e no preenchimento de dados.",
+        body: "Construção das telas e de componentes reutilizáveis, navegação e experiência do usuário. Formulários, validações e máscaras apoiam o preenchimento das informações e os fluxos de gerenciamento de anúncios.",
       },
       {
         title: "Frontend e integração",
-        body: "React Native, Expo e TypeScript compõem o frontend. A integração utiliza os serviços de um backend Java com Spring Boot, cuja implementação integral não é atribuída à minha atuação.",
+        body: "Responsabilidade integral pelo frontend em React Native, Expo e TypeScript, incluindo a integração com os serviços do projeto. O backend em Java com Spring Boot foi desenvolvido por outra equipe.",
       },
       {
         title: "Acesso e continuidade de sessão",
-        body: "O escopo inclui autenticação JWT, validação de informações e persistência segura de sessão. Esses fluxos fazem parte do desenvolvimento do aplicativo.",
+        body: "Autenticação no frontend, gerenciamento e persistência segura de sessão, validações e integração com os serviços de acesso. Parte do aplicativo continua em desenvolvimento; o fluxo completo de aluguel e pagamento não é apresentado como concluído.",
       },
     ],
     nextSteps: [
@@ -190,34 +231,38 @@ export const projects: Project[] = [
     slug: "ondefica",
     name: "OndeFica",
     title: "Brasília, de um novo ponto de vista.",
-    category: "Turismo / Planejamento",
-    filters: ["Web"],
+    category: "Mobile / Turismo e Planejamento",
+    filters: ["Mobile"],
     theme: "ondefica",
     description:
       "Descubra pontos turísticos, salve lugares favoritos e organize roteiros de viagem em Brasília.",
-    status: "Interface em apresentação",
-    role: "Projeto de aplicação responsiva",
-    stack: [],
+    status: "Projeto autoral",
+    role: "Desenvolvimento completo — frontend e backend",
+    stack: ["React Native", "Python", "FastAPI"],
     stackNote:
-      "A stack será incluída após confirmação no repositório. Esta apresentação descreve as interfaces e funcionalidades observadas, sem atribuir tecnologias não verificadas.",
+      "Desenvolvi toda a aplicação: frontend em React Native e backend em Python com FastAPI.",
     cover: shot("ondefica", "cover", "Descubra e planeje Brasília"),
+    coverComposition: {
+      primary: ondeFicaGallery[0],
+      secondary: ondeFicaGallery[4],
+    },
     overview:
-      "O OndeFica reúne descoberta de lugares e planejamento de visitas a Brasília. A interface conecta a exploração de pontos turísticos aos favoritos, à programação da viagem e ao roteiro de cada dia.",
+      "Desenvolvi toda a aplicação OndeFica, incluindo frontend em React Native e backend em Python com FastAPI. O aplicativo conecta a descoberta de lugares ao planejamento de viagens, com favoritos, programação de visitas e roteiros organizados por dia e horário.",
     problem:
       "Descobrir um lugar interessante é só uma parte do passeio. Depois vêm as decisões sobre o que visitar, em qual ordem e em quais horários. O desafio é dar continuidade entre descoberta e organização.",
     solution:
-      "Uma experiência responsiva com busca, filtros, detalhes dos pontos turísticos e favoritos. O planejamento reúne visitas, horários, indicadores de despesas e exportação para PDF. As sete telas da galeria estão preparadas para receber as capturas reais.",
+      "Uma aplicação mobile com exploração, busca, categorias, detalhes dos locais e favoritos. A organização de viagens reúne informações de visitação, programação por dia e horário, autenticação, preferências e exportação da programação em PDF.",
     features: [
-      "Exploração de locais",
+      "Exploração de pontos turísticos",
       "Busca e filtros por categorias",
       "Detalhes de pontos turísticos",
       "Favoritos",
-      "Login e cadastro",
-      "Programação de viagens",
-      "Organização de visitas",
-      "Horários de roteiro",
-      "Indicadores de despesas",
-      "Exportação para PDF",
+      "Autenticação",
+      "Organização de viagens",
+      "Programação de visitas",
+      "Roteiros por dia e horário",
+      "Informações de visitação",
+      "Exportação de programação em PDF",
       "Configurações e preferências",
     ],
     technical: [
@@ -230,23 +275,14 @@ export const projects: Project[] = [
         body: "Favoritos alimentam o planejamento. A programação e o roteiro diário organizam visitas e horários, com indicadores de despesas e opção de exportação para PDF.",
       },
       {
-        title: "Continuidade entre telas",
-        body: "O conjunto inclui acesso, configurações e preferências, além dos fluxos de descoberta e planejamento. O estudo valoriza a organização da interface, sem inferir a arquitetura técnica.",
+        title: "Da interface ao backend",
+        body: "Desenvolvimento completo da aplicação, com frontend em React Native e backend em Python com FastAPI. Minha atuação abrange a experiência mobile e os serviços que apoiam os fluxos de descoberta e planejamento.",
       },
     ],
-    nextSteps: [
-      "Incluir as sete capturas reais da aplicação.",
-      "Confirmar tecnologias e detalhes de implementação no repositório.",
+    nextSteps: [],
+    gallery: ondeFicaGallery,
+    links: [
+      { label: "Repositório", href: "https://github.com/gusz11/OndeFica" },
     ],
-    gallery: [
-      shot("ondefica", "explorar", "Explorar Brasília"),
-      shot("ondefica", "detalhes", "Detalhes da Catedral"),
-      shot("ondefica", "login", "Login"),
-      shot("ondefica", "favoritos", "Favoritos"),
-      shot("ondefica", "programacao", "Programação"),
-      shot("ondefica", "roteiro", "Roteiro do dia"),
-      shot("ondefica", "configuracoes", "Configurações"),
-    ],
-    links: [],
   },
 ];

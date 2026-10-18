@@ -1,5 +1,8 @@
 import { projects } from "@/data/projects";
-import { publicAssetExists } from "@/lib/project-utils";
+import {
+  getAvailableCoverComposition,
+  publicAssetExists,
+} from "@/lib/project-utils";
 import { Container } from "@/components/layout/Container";
 import { SectionHeading } from "@/components/layout/SectionHeading";
 import { ProjectGrid } from "@/components/projects/ProjectGrid";
@@ -22,6 +25,7 @@ export function FeaturedProjects() {
               description,
               stack,
               cover,
+              coverComposition,
             }) => ({
               slug,
               name,
@@ -31,6 +35,9 @@ export function FeaturedProjects() {
               description,
               stack,
               cover,
+              coverComposition: getAvailableCoverComposition({
+                coverComposition,
+              }),
             }),
           )}
           availableImages={projects

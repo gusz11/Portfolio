@@ -5,6 +5,10 @@ export interface ProjectImage {
   alt: string;
   path: string;
 }
+export interface ProjectCoverComposition {
+  primary: ProjectImage;
+  secondary: ProjectImage;
+}
 export interface Project {
   slug: string;
   name: string;
@@ -18,6 +22,7 @@ export interface Project {
   stack: string[];
   stackNote?: string;
   cover: ProjectImage;
+  coverComposition?: ProjectCoverComposition;
   overview: string;
   problem: string;
   solution: string;
@@ -37,4 +42,5 @@ export type ProjectPreview = Pick<
   | "description"
   | "stack"
   | "cover"
+  | "coverComposition"
 >;

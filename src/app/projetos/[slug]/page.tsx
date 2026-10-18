@@ -76,12 +76,18 @@ export default async function ProjectPage({
           <div className="editorial-grid">
             <ProjectTechStack project={project} />
             <div>
-              <h2>Próximos passos</h2>
-              <ul className="next-steps">
-                {project.nextSteps.map((step) => (
-                  <li key={step}>{step}</li>
-                ))}
-              </ul>
+              <h2>
+                {project.nextSteps.length
+                  ? "Próximos passos"
+                  : "Explore o projeto"}
+              </h2>
+              {project.nextSteps.length > 0 && (
+                <ul className="next-steps">
+                  {project.nextSteps.map((step) => (
+                    <li key={step}>{step}</li>
+                  ))}
+                </ul>
+              )}
               <ProjectLinks links={project.links} />
             </div>
           </div>

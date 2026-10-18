@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "../styles/animations.css";
+@import "../styles/ondefica.css";
 
 @theme inline {
   --color-background: #09090f;
@@ -2161,27 +2162,6 @@ img {
   margin-block: 24px;
   max-width: 460px;
 }
-.loading-project {
-  padding-top: 160px;
-  min-height: 80svh;
-}
-.loading-project p {
-  color: var(--muted);
-}
-.loading-line {
-  width: 65%;
-  height: 60px;
-  background: var(--surface);
-  margin-block: 30px;
-  border-radius: 8px;
-}
-.loading-panel {
-  width: 100%;
-  aspect-ratio: 2;
-  background: var(--surface);
-  border-radius: 16px;
-}
-
 @media (min-width: 1700px) {
   .hero-main {
     min-height: 790px;
