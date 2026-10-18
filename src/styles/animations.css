@@ -1,0 +1,47 @@
+@keyframes orbital-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-28deg);
+  }
+  50% {
+    transform: translateY(-15px) rotate(-21deg);
+  }
+}
+@keyframes orbital-light {
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: scale(0.95);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .orbital-sculpture {
+    animation: orbital-float 14s ease-in-out infinite;
+  }
+  .orbital-halo {
+    animation: orbital-light 12s ease-in-out infinite;
+  }
+  .hero-art[data-paused="true"] .orbital-sculpture,
+  .hero-art[data-paused="true"] .orbital-halo {
+    animation-play-state: paused;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition-duration: 0s !important;
+    scroll-behavior: auto !important;
+  }
+  .tilt-card {
+    transform: none !important;
+  }
+}
