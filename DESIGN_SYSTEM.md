@@ -43,3 +43,9 @@ Grids passam a uma coluna abaixo de 768px, menu compacto abaixo de 1100px. O her
 ## Refinamento localizado do OndeFica
 
 A capa reutiliza a direção de arte aprovada: verde suave `#BECBB9`, linhas de rota `#DAE1D0`, detalhes oliva `#637653` e aparelhos escuros `#161813`. Mantém Sora, Manrope, proporções dos cards e animações existentes. Dois smartphones levemente inclinados enquadram as capturas reais de Explorar e Programação, com prioridade visual para Explorar. A alternativa de usar apenas um print plano foi descartada para preservar a profundidade e a linguagem das capas. A galeria exibe os sete arquivos originais inteiros. CSS específico em `src/styles/ondefica.css`, sem alterar Hero, Garago ou tokens globais.
+
+## Identidade localizada do Garago
+
+A paleta parte das capturas reais: azul-ardósia `#1C2531` nos aparelhos e títulos, texto secundário `#435A73`, destaque azul `#246B9E`, superfície azul-claro `#DCEBF7` e linhas `#ADC6DC`. O repositório indicado não estava acessível publicamente; estes são tokens de apresentação derivados das imagens, não tokens oficiais confirmados. Sora nos títulos e Manrope no corpo permanecem intactas.
+
+Composição: `texto à esquerda | Inventário inclinado atrás + Catálogo inclinado à frente`. A capa preserva suas proporções e animações, com capturas inteiras e linhas discretas inspiradas na planta de vagas. A galeria conserva os textos e controles; no mobile usa `texto / aparelho grande / aviso demonstrativo`, sem alturas mínimas artificiais. A alternativa de repetir um gradiente azul genérico foi descartada: a identidade vem das telas autênticas e de uma superfície clara que não compete com elas. Tokens e seletores ficam restritos ao Garago em `src/styles/garago-gallery.css`.

@@ -8,6 +8,80 @@ function shot(folder: string, file: string, label: string): ProjectImage {
   };
 }
 
+// Original captures: JPEG, 738 × 1600. Keep filenames and interfaces intact.
+function garagoScreen(
+  file: string,
+  label: string,
+  title: string,
+  description: string,
+  alt: string,
+): ProjectImage {
+  return {
+    path: `/images/projects/garago/${file}.jpeg`,
+    label,
+    alt,
+    width: 738,
+    height: 1600,
+    presentation: {
+      title,
+      description,
+      note: "Captura real do app em desenvolvimento, com dados demonstrativos. Não representa locações ou pagamentos reais.",
+    },
+  };
+}
+
+const garagoGallery: ProjectImage[] = [
+  garagoScreen(
+    "WhatsApp Image 2026-10-19 at 22.23.51 (1)",
+    "Catálogo",
+    "Encontre seu espaço.",
+    "O catálogo reúne vagas e armários, com categorias, localização e valores mensais apresentados na interface.",
+    "Catálogo do Garago com abas Todos, Vagas e Armários e quatro anúncios demonstrativos com localização e valor mensal",
+  ),
+  garagoScreen(
+    "WhatsApp Image 2026-10-19 at 22.23.51 (3)",
+    "Detalhes da vaga",
+    "Cada detalhe importa.",
+    "A tela da vaga apresenta cobertura, piso, vigilância, eletroposto e dimensões, além das informações do anúncio.",
+    "Detalhes de uma vaga fictícia no Garago, com características, dimensões, descrição, valor e botão Reservar",
+  ),
+  garagoScreen(
+    "WhatsApp Image 2026-10-19 at 22.23.52 (2)",
+    "Contato e avaliações",
+    "Mais contexto para escolher.",
+    "Contato do proprietário, política de cancelamento e avaliações aparecem nesta continuação do anúncio, com conteúdo fictício.",
+    "Continuação do anúncio no Garago com proprietário fictício, aviso de que a demonstração não realiza cobranças e avaliações fictícias",
+  ),
+  garagoScreen(
+    "WhatsApp Image 2026-10-19 at 22.23.51 (2)",
+    "Reservas",
+    "Prazos à vista.",
+    "A interface de reservas apresenta períodos, tempo restante e ações de entregar e renovar em um cenário demonstrativo.",
+    "Tela de reservas do Garago com uma vaga e um armário demonstrativos, datas, barras de prazo e botões Entregar e Renovar",
+  ),
+  garagoScreen(
+    "WhatsApp Image 2026-10-19 at 22.23.51",
+    "Inventário",
+    "Seus espaços, reunidos.",
+    "O inventário apresenta vagas e armários fictícios, distinguindo itens em uso e disponíveis, com indicação de prazo.",
+    "Inventário demonstrativo do Garago com vaga em uso, prazo previsto, armário disponível e ação Adicionar",
+  ),
+  garagoScreen(
+    "WhatsApp Image 2026-10-19 at 22.23.52 (1)",
+    "Adicionar item",
+    "Um novo espaço.",
+    "O formulário de adição permite escolher o tipo de item e informar valor e características da vaga. A captura mostra parte desse formulário.",
+    "Formulário Adicionar Item ao Inventário do Garago com escolha de vaga ou armário, valor do aluguel e características da vaga",
+  ),
+  garagoScreen(
+    "WhatsApp Image 2026-10-19 at 22.23.52",
+    "Perfil",
+    "O morador no centro.",
+    "A tela de perfil reúne identificação do morador e dados de contato, incluindo estados de foto e CPF não disponíveis.",
+    "Perfil de morador no Garago com foto indisponível, nome Gustavo, CPF não disponibilizado e dados de contato de exemplo",
+  ),
+];
+
 const ondeFicaGallery: ProjectImage[] = [
   {
     path: "/images/projects/ondefica/01-explorar.jpg",
@@ -176,6 +250,10 @@ export const projects: Project[] = [
     stackNote:
       "Fui responsável por todo o frontend em React Native, com Expo e TypeScript. O backend em Java e Spring Boot foi desenvolvido por outra equipe.",
     cover: shot("garago", "cover", "Locação de vagas e armários"),
+    coverComposition: {
+      primary: garagoGallery[0],
+      secondary: garagoGallery[4],
+    },
     overview:
       "O Garago conecta moradores interessados em anunciar e encontrar vagas de garagem e armários no condomínio. Fui responsável por todo o desenvolvimento frontend em React Native, incluindo telas, componentes reutilizáveis, navegação, formulários e integração com os serviços backend.",
     problem:
@@ -212,10 +290,7 @@ export const projects: Project[] = [
       "Validar a experiência de ponta a ponta com os serviços do projeto.",
       "Amadurecer o fluxo de locação; aluguel e pagamento completos não estão confirmados.",
     ],
-    gallery: [
-      shot("garago", "login", "Fluxos de acesso"),
-      shot("garago", "spaces", "Espaços e anúncios"),
-    ],
+    gallery: garagoGallery,
     links: [
       {
         label: "Repositório frontend",

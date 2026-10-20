@@ -19,6 +19,12 @@
   }
 }
 @media (prefers-reduced-motion: no-preference) {
+  .garago-cover-stage {
+    transition: transform 0.5s;
+  }
+  .project-cover-link:hover .garago-cover-stage {
+    transform: scale(1.025);
+  }
   .orbital-sculpture {
     animation: orbital-float 14s ease-in-out infinite;
   }

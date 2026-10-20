@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
+import { projects } from "../src/data/projects";
 
 const routes = [
   "/",
@@ -365,7 +366,9 @@ test("OndeFica usa dois smartphones reais na capa e sete capturas na galeria", a
   await page
     .locator(".card-ondefica")
     .screenshot({ path: "test-results/screenshots/ondefica-card-mobile.png" });
-  await expect(page.locator(".card-garago .demo-garago .phone")).toHaveCount(2);
+  await expect(
+    page.locator(".card-garago .garago-cover-device img"),
+  ).toHaveCount(2);
 });
 
 test("capa do OndeFica mantém o placeholder se uma captura falhar", async ({
@@ -481,11 +484,300 @@ test("galeria editorial do OndeFica: sete telas, proporções e ampliação", as
   await page.goto("/projetos/garago");
   await expect(page.locator(".gallery .ondefica-gallery-slide")).toHaveCount(0);
   await expect(
-    page.locator(".gallery-stage .gallery-phone-demo"),
+    page.locator(".gallery-stage .garago-gallery-slide"),
   ).toBeVisible();
   await page.locator(".gallery-stage").screenshot({
     path: "test-results/screenshots/garago-gallery-reference.png",
     style:
       ".site-header, .scroll-progress, .back-to-top { visibility: hidden; }",
   });
+});
+
+test("Garago: sete capturas reais, proporções e lightbox nas sete larguras", async ({
+  page,
+  request,
+}) => {
+  test.setTimeout(120000);
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  const gallery = projects.find(({ slug }) => slug === "garago")!.gallery;
+  expect(gallery.map(({ label }) => label)).toEqual([
+    "Catálogo",
+    "Detalhes da vaga",
+    "Contato e avaliações",
+    "Reservas",
+    "Inventário",
+    "Adicionar item",
+    "Perfil",
+  ]);
+  for (const image of gallery) {
+    const response = await request.get(image.path);
+    expect(response.status()).toBe(200);
+    expect(response.headers()["content-type"]).toContain("image/jpeg");
+  }
+  for (const width of widths) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/projetos/garago");
+    await expect(
+      page.locator(".case-hero .garago-cover-device img"),
+    ).toHaveCount(2);
+    const panel = page.locator(".gallery-stage .garago-gallery-slide");
+    for (let index = 0; index < gallery.length; index++) {
+      const screen = gallery[index];
+      await page.locator(".gallery-thumbnails button").nth(index).click();
+      await expect(panel.getByRole("heading", { level: 3 })).toHaveText(
+        screen.presentation!.title,
+      );
+      await expect(panel.locator(".garago-gallery-note")).toContainText(
+        "dados demonstrativos",
+      );
+      const image = panel.locator("img");
+      await expect(image).toHaveAttribute("alt", screen.alt);
+      await image.scrollIntoViewIfNeeded();
+      await expect
+        .poll(() =>
+          image.evaluate((element: HTMLImageElement) => element.naturalWidth),
+        )
+        .toBeGreaterThan(0);
+      const geometry = await panel.evaluate((element) => {
+        const panel = element.getBoundingClientRect();
+        const copy = element
+          .querySelector(".garago-gallery-editorial")!
+          .getBoundingClientRect();
+        const phone = element
+          .querySelector(".garago-gallery-device")!
+          .getBoundingClientRect();
+        const image = element.querySelector("img") as HTMLImageElement;
+        return {
+          panelBottom: panel.bottom,
+          panelHeight: panel.height,
+          copyRight: copy.right,
+          copyBottom: copy.bottom,
+          phoneLeft: phone.left,
+          phoneTop: phone.top,
+          phoneBottom: phone.bottom,
+          phoneHeight: phone.height,
+          objectFit: getComputedStyle(image).objectFit,
+          ratio: image.naturalWidth / image.naturalHeight,
+          overflow:
+            document.documentElement.scrollWidth > window.innerWidth + 1,
+        };
+      });
+      expect(geometry.overflow).toBe(false);
+      expect(geometry.objectFit).toBe("contain");
+      expect(geometry.ratio).toBeCloseTo(738 / 1600, 2);
+      expect(geometry.phoneBottom).toBeLessThanOrEqual(
+        geometry.panelBottom + 1,
+      );
+      if (width >= 768) {
+        expect(geometry.phoneLeft).toBeGreaterThan(geometry.copyRight);
+        expect(geometry.phoneHeight / geometry.panelHeight).toBeGreaterThan(
+          0.83,
+        );
+      } else expect(geometry.phoneTop).toBeGreaterThan(geometry.copyBottom);
+      if (index === 0 || (width === 1440 && index === 5))
+        await panel.screenshot({
+          path: `test-results/screenshots/garago-real-${width}-${index + 1}.png`,
+          style:
+            ".site-header, .scroll-progress, .back-to-top, .skip-link { visibility: hidden; }",
+        });
+    }
+    const previewWidth = await panel
+      .locator("img")
+      .evaluate((image) => image.getBoundingClientRect().width);
+    const expand = page.locator(".gallery-expand");
+    await expect(expand).toHaveAccessibleName("Ampliar: Perfil");
+    await expand.click();
+    const dialog = page.getByRole("dialog", {
+      name: "Imagem ampliada do projeto",
+    });
+    await expect(dialog).toBeVisible();
+    await expect(
+      dialog.locator(".garago-gallery-slide, .garago-gallery-device"),
+    ).toHaveCount(0);
+    const raw = dialog.locator("img");
+    await expect
+      .poll(() => raw.evaluate((image: HTMLImageElement) => image.naturalWidth))
+      .toBeGreaterThan(0);
+    expect(
+      await raw.evaluate((image) => image.getBoundingClientRect().width),
+    ).toBeGreaterThan(previewWidth);
+    const bounds = await raw.boundingBox();
+    expect(bounds!.width / bounds!.height).toBeCloseTo(738 / 1600, 2);
+    await page.keyboard.press("Shift+Tab");
+    expect(
+      await dialog.evaluate((element) =>
+        element.contains(document.activeElement),
+      ),
+    ).toBe(true);
+    await page.keyboard.press("ArrowRight");
+    await expect(dialog.locator("img")).toHaveAttribute("alt", gallery[0].alt);
+    if (width === 390 || width === 1440)
+      await dialog.screenshot({
+        path: `test-results/screenshots/garago-lightbox-${width}.png`,
+      });
+    await dialog.evaluate((element) => {
+      element.scrollTop = element.scrollHeight;
+    });
+    await expect(
+      dialog.getByRole("button", { name: "Fechar imagem ampliada" }),
+    ).toBeVisible();
+    const result = await new AxeBuilder({ page })
+      .include(".garago-gallery-dialog")
+      .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+      .analyze();
+    expect(result.violations).toEqual([]);
+    await page.keyboard.press("Escape");
+    await expect(dialog).not.toBeVisible();
+    await expect(expand).toBeFocused();
+    await expect(page.locator("body")).not.toHaveCSS("overflow", "hidden");
+  }
+});
+
+test("Garago azul: capa real e composição isolada em todas as larguras", async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  const garago = projects.find(({ slug }) => slug === "garago")!;
+  for (const width of widths) {
+    await page.setViewportSize({ width, height: 900 });
+    for (const home of [false, true]) {
+      await page.goto(home ? "/#projetos" : "/projetos/garago");
+      const cover = page.locator(
+        home ? ".card-garago .garago-cover" : ".case-hero .garago-cover",
+      );
+      await cover.scrollIntoViewIfNeeded();
+      await expect(cover.locator("img")).toHaveCount(2);
+      await expect(cover.locator(".demo-disclaimer, .demo-garago")).toHaveCount(
+        0,
+      );
+      await expect(cover).toHaveCSS("background-color", "rgb(220, 235, 247)");
+      await expect(
+        cover.locator(".garago-cover-device-primary img"),
+      ).toHaveAttribute("alt", garago.gallery[0].alt);
+      await expect(
+        cover.locator(".garago-cover-device-secondary img"),
+      ).toHaveAttribute("alt", garago.gallery[4].alt);
+      for (const image of await cover.locator("img").all()) {
+        await expect
+          .poll(() =>
+            image.evaluate((element: HTMLImageElement) => element.naturalWidth),
+          )
+          .toBeGreaterThan(0);
+        await expect(image).toHaveCSS("object-fit", "contain");
+      }
+      const geometry = await cover.evaluate((element) => {
+        const bounds = element.getBoundingClientRect();
+        return Array.from(element.querySelectorAll(".garago-cover-device")).map(
+          (device) => {
+            const phone = device.getBoundingClientRect();
+            return (
+              phone.left >= bounds.left &&
+              phone.right <= bounds.right &&
+              phone.top >= bounds.top &&
+              phone.bottom <= bounds.bottom
+            );
+          },
+        );
+      });
+      expect(geometry).toEqual([true, true]);
+      if ([390, 768, 1440].includes(width))
+        await cover.screenshot({
+          path: `test-results/screenshots/garago-blue-${home ? "card" : "cover"}-${width}.png`,
+          style:
+            ".site-header, .skip-link, .scroll-progress, .back-to-top { visibility: hidden; }",
+        });
+      if (!home) {
+        await expect(page.locator(".project-status")).toContainText(
+          "Em desenvolvimento",
+        );
+        const panel = page.locator(".garago-gallery-slide");
+        await expect(panel).toHaveCSS("background-color", "rgb(220, 235, 247)");
+        if (width === 390) {
+          const geometry = await panel.evaluate((element) => {
+            const panel = element.getBoundingClientRect();
+            const device = element
+              .querySelector(".garago-gallery-device")!
+              .getBoundingClientRect();
+            const copy = element
+              .querySelector(".garago-gallery-editorial")!
+              .getBoundingClientRect();
+            const note = element
+              .querySelector(".garago-gallery-note")!
+              .getBoundingClientRect();
+            return {
+              deviceOffset: device.top - panel.top,
+              copyBottom: copy.bottom,
+              deviceTop: device.top,
+              deviceBottom: device.bottom,
+              noteTop: note.top,
+            };
+          });
+          expect(geometry.deviceOffset).toBeLessThan(240);
+          expect(geometry.deviceTop).toBeGreaterThan(geometry.copyBottom);
+          expect(geometry.noteTop).toBeGreaterThan(geometry.deviceBottom);
+        }
+      }
+    }
+  }
+});
+
+test("Garago: touch, ciclo das setas e falha de imagem identificada", async ({
+  browser,
+  baseURL,
+}) => {
+  const context = await browser.newContext({
+    baseURL,
+    viewport: { width: 390, height: 844 },
+    hasTouch: true,
+    reducedMotion: "reduce",
+  });
+  try {
+    const page = await context.newPage();
+    await page.goto("/projetos/garago");
+    const choices = page.locator(".gallery-thumbnails button");
+    const stage = page.locator(".gallery-stage");
+    await stage.dispatchEvent("pointerdown", {
+      pointerType: "touch",
+      clientX: 300,
+      clientY: 400,
+    });
+    await stage.dispatchEvent("pointerup", {
+      pointerType: "touch",
+      clientX: 100,
+      clientY: 410,
+    });
+    await expect(choices.nth(1)).toHaveAttribute("aria-pressed", "true");
+    await stage.dispatchEvent("pointerdown", {
+      pointerType: "touch",
+      clientX: 150,
+      clientY: 400,
+    });
+    await stage.dispatchEvent("pointerup", {
+      pointerType: "touch",
+      clientX: 160,
+      clientY: 200,
+    });
+    await expect(choices.nth(1)).toHaveAttribute("aria-pressed", "true");
+    await page
+      .locator(".gallery > .gallery-controls")
+      .getByRole("button", { name: "Imagem anterior" })
+      .tap();
+    await expect(choices.nth(0)).toHaveAttribute("aria-pressed", "true");
+    await page
+      .locator(".gallery > .gallery-controls")
+      .getByRole("button", { name: "Imagem anterior" })
+      .tap();
+    await expect(choices.nth(6)).toHaveAttribute("aria-pressed", "true");
+    await page.route("**/_next/image?*", async (route) => {
+      const path = new URL(route.request().url()).searchParams.get("url");
+      if (path?.includes("/garago/")) await route.abort();
+      else await route.continue();
+    });
+    await page.reload();
+    await expect(page.locator(".gallery-stage .demo-disclaimer")).toHaveText(
+      "Demonstração visual",
+    );
+  } finally {
+    await context.close();
+  }
 });

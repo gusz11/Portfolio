@@ -7,6 +7,7 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { ProjectVisual } from "./ProjectVisual";
 import { trapDialogFocus } from "@/lib/focus";
 import { OndeFicaGallerySlide } from "./OndeFicaGallerySlide";
+import { GaragoGallerySlide } from "./GaragoGallerySlide";
 export function ProjectGallery({
   images,
   theme,
@@ -20,6 +21,7 @@ export function ProjectGallery({
   const reduced = useReducedMotion();
   const dialog = useRef<HTMLDialogElement>(null);
   const expand = useRef<HTMLButtonElement>(null);
+  const touchStart = useRef<{ x: number; y: number } | null>(null);
   const current = images[index];
   useEffect(() => {
     const element = dialog.current;
@@ -55,7 +57,11 @@ export function ProjectGallery({
   }
   return (
     <div
-      className={theme === "ondefica" ? "gallery gallery-ondefica" : "gallery"}
+      className={
+        theme === "ondefica" || theme === "garago"
+          ? `gallery gallery-${theme}`
+          : "gallery"
+      }
       onKeyDown={(event) => {
         if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
           event.preventDefault();
@@ -63,7 +69,25 @@ export function ProjectGallery({
         }
       }}
     >
-      <div className="gallery-stage">
+      <div
+        className="gallery-stage"
+        onPointerDown={(event) => {
+          if (theme === "garago" && event.pointerType === "touch")
+            touchStart.current = { x: event.clientX, y: event.clientY };
+        }}
+        onPointerCancel={() => {
+          touchStart.current = null;
+        }}
+        onPointerUp={(event) => {
+          const start = touchStart.current;
+          touchStart.current = null;
+          if (!start || theme !== "garago") return;
+          const dx = event.clientX - start.x;
+          const dy = event.clientY - start.y;
+          if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5)
+            step(dx < 0 ? 1 : -1);
+        }}
+      >
         <motion.div
           key={current.path}
           initial={reduced ? false : { opacity: 0.7 }}
@@ -76,6 +100,12 @@ export function ProjectGallery({
               available={availableImages.includes(current.path)}
               index={index}
               total={images.length}
+              reducedMotion={reduced}
+            />
+          ) : theme === "garago" ? (
+            <GaragoGallerySlide
+              image={current}
+              available={availableImages.includes(current.path)}
               reducedMotion={reduced}
             />
           ) : (
@@ -126,7 +156,9 @@ export function ProjectGallery({
         className={
           theme === "ondefica"
             ? "gallery-dialog ondefica-gallery-dialog"
-            : "gallery-dialog"
+            : theme === "garago"
+              ? "gallery-dialog garago-gallery-dialog"
+              : "gallery-dialog"
         }
         aria-label="Imagem ampliada do projeto"
         onKeyDown={trapDialogFocus}

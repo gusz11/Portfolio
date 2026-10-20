@@ -8,6 +8,7 @@ import type {
 } from "@/types/project";
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
 import { OndeFicaCover } from "./OndeFicaCover";
+import { GaragoCover } from "./GaragoCover";
 export function ProjectVisual({
   image,
   theme,
@@ -22,6 +23,14 @@ export function ProjectVisual({
   composition?: ProjectCoverComposition;
 }) {
   const [failedPath, setFailedPath] = useState<string>();
+  if (composition && theme === "garago" && failedPath !== image.path)
+    return (
+      <GaragoCover
+        composition={composition}
+        priority={priority}
+        onError={() => setFailedPath(image.path)}
+      />
+    );
   if (composition && theme === "ondefica" && failedPath !== image.path)
     return (
       <OndeFicaCover
@@ -43,7 +52,14 @@ export function ProjectVisual({
     />
   );
   return (
-    <div className={`project-visual real-image visual-${theme}`}>
+    <div
+      className={`project-visual real-image visual-${theme}`}
+      style={
+        image.width && image.height
+          ? { aspectRatio: `${image.width} / ${image.height}` }
+          : undefined
+      }
+    >
       {theme === "ondefica" ? (
         <div className="project-screenshot">{screenshot}</div>
       ) : (

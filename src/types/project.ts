@@ -4,6 +4,13 @@ export interface ProjectImage {
   label: string;
   alt: string;
   path: string;
+  width?: number;
+  height?: number;
+  presentation?: {
+    title: string;
+    description: string;
+    note: string;
+  };
 }
 export interface ProjectCoverComposition {
   primary: ProjectImage;
