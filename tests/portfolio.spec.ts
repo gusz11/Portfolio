@@ -11,6 +11,30 @@ const routes = [
 ];
 const widths = [320, 375, 390, 768, 1024, 1440, 1920];
 
+test("projetos sem botões de repositório preservam aplicação e GitHub de contato", async ({
+  page,
+}) => {
+  for (const route of routes.slice(1)) {
+    await page.goto(route);
+    await expect(page.locator('main a[href*="github.com"]')).toHaveCount(0);
+    await expect(
+      page.getByRole("link", { name: /Repositório|Ver código/i }),
+    ).toHaveCount(0);
+    if (route === "/projetos/luria")
+      await expect(
+        page.getByRole("link", { name: /^Acessar aplicação/ }),
+      ).toHaveAttribute("href", "https://www.resibulando.online");
+    if (route === "/projetos/ondefica")
+      await expect(
+        page.getByRole("heading", { name: "Explore o projeto" }),
+      ).toHaveCount(0);
+  }
+  await page.goto("/");
+  await expect(
+    page.locator('#contato a[href="https://github.com/gusz11"]'),
+  ).toBeVisible();
+});
+
 test("LURIA: dezesseis capturas reais, sequência editorial e zoom legível", async ({
   page,
   request,
@@ -237,7 +261,6 @@ test("LURIA: capa autêntica na home e no caso, sete larguras e atribuições fi
   );
   await expect(page.locator("main")).toContainText("CSP");
   for (const [label, href] of [
-    ["Ver código", "https://github.com/arantes225/luria"],
     ["Acessar aplicação", "https://www.resibulando.online"],
   ]) {
     const link = page.getByRole("link", { name: new RegExp(`^${label}`) });
@@ -567,10 +590,7 @@ test("dados profissionais, atribuições e links atualizados", async ({
   await expect(
     page.getByRole("link", { name: /Acessar aplicação/ }),
   ).toHaveAttribute("href", "https://www.resibulando.online");
-  await expect(page.getByRole("link", { name: /^Ver código/ })).toHaveAttribute(
-    "href",
-    "https://github.com/arantes225/luria",
-  );
+  await expect(page.getByRole("link", { name: /^Ver código/ })).toHaveCount(0);
   await page.goto("/projetos/ondefica");
   await expect(page.locator(".case-stack")).toContainText("React Native");
   await expect(page.locator(".case-stack")).toContainText("Python");
@@ -581,9 +601,7 @@ test("dados profissionais, atribuições e links atualizados", async ({
   await expect(
     page.getByRole("heading", { name: "Próximos passos" }),
   ).toHaveCount(0);
-  await expect(
-    page.getByRole("link", { name: /^Repositório/ }),
-  ).toHaveAttribute("href", "https://github.com/gusz11/OndeFica");
+  await expect(page.getByRole("link", { name: /^Repositório/ })).toHaveCount(0);
 });
 
 test("OndeFica usa dois smartphones reais na capa e sete capturas na galeria", async ({

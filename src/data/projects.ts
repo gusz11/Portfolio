@@ -323,7 +323,6 @@ export const projects: Project[] = [
     ],
     gallery: luriaGallery,
     links: [
-      { label: "Ver código", href: "https://github.com/arantes225/luria" },
       { label: "Acessar aplicação", href: "https://www.resibulando.online" },
     ],
   },
@@ -438,16 +437,7 @@ export const projects: Project[] = [
       "Amadurecer o fluxo de locação; aluguel e pagamento completos não estão confirmados.",
     ],
     gallery: garagoGallery,
-    links: [
-      {
-        label: "Repositório frontend",
-        href: "https://github.com/CaioQC/Garago_Front",
-      },
-      {
-        label: "Repositório backend",
-        href: "https://github.com/CaioQC/Garago_Back",
-      },
-    ],
+    links: [],
   },
   {
     slug: "ondefica",
@@ -503,8 +493,6 @@ export const projects: Project[] = [
     ],
     nextSteps: [],
     gallery: ondeFicaGallery,
-    links: [
-      { label: "Repositório", href: "https://github.com/gusz11/OndeFica" },
-    ],
+    links: [],
   },
 ];
