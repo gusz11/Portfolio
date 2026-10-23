@@ -8,6 +8,7 @@ import { ProjectVisual } from "./ProjectVisual";
 import { trapDialogFocus } from "@/lib/focus";
 import { OndeFicaGallerySlide } from "./OndeFicaGallerySlide";
 import { GaragoGallerySlide } from "./GaragoGallerySlide";
+import { LuriaGallerySlide } from "./LuriaGallerySlide";
 export function ProjectGallery({
   images,
   theme,
@@ -18,6 +19,7 @@ export function ProjectGallery({
   availableImages: string[];
 }) {
   const [index, setIndex] = useState(0);
+  const [detailZoom, setDetailZoom] = useState(false);
   const reduced = useReducedMotion();
   const dialog = useRef<HTMLDialogElement>(null);
   const expand = useRef<HTMLButtonElement>(null);
@@ -58,7 +60,7 @@ export function ProjectGallery({
   return (
     <div
       className={
-        theme === "ondefica" || theme === "garago"
+        theme === "ondefica" || theme === "garago" || theme === "luria"
           ? `gallery gallery-${theme}`
           : "gallery"
       }
@@ -72,7 +74,10 @@ export function ProjectGallery({
       <div
         className="gallery-stage"
         onPointerDown={(event) => {
-          if (theme === "garago" && event.pointerType === "touch")
+          if (
+            (theme === "garago" || theme === "luria") &&
+            event.pointerType === "touch"
+          )
             touchStart.current = { x: event.clientX, y: event.clientY };
         }}
         onPointerCancel={() => {
@@ -81,7 +86,7 @@ export function ProjectGallery({
         onPointerUp={(event) => {
           const start = touchStart.current;
           touchStart.current = null;
-          if (!start || theme !== "garago") return;
+          if (!start || (theme !== "garago" && theme !== "luria")) return;
           const dx = event.clientX - start.x;
           const dy = event.clientY - start.y;
           if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5)
@@ -104,6 +109,12 @@ export function ProjectGallery({
             />
           ) : theme === "garago" ? (
             <GaragoGallerySlide
+              image={current}
+              available={availableImages.includes(current.path)}
+              reducedMotion={reduced}
+            />
+          ) : theme === "luria" ? (
+            <LuriaGallerySlide
               image={current}
               available={availableImages.includes(current.path)}
               reducedMotion={reduced}
@@ -158,11 +169,14 @@ export function ProjectGallery({
             ? "gallery-dialog ondefica-gallery-dialog"
             : theme === "garago"
               ? "gallery-dialog garago-gallery-dialog"
-              : "gallery-dialog"
+              : theme === "luria"
+                ? "gallery-dialog luria-gallery-dialog"
+                : "gallery-dialog"
         }
         aria-label="Imagem ampliada do projeto"
         onKeyDown={trapDialogFocus}
         onClose={() => {
+          setDetailZoom(false);
           document.body.style.overflow = "";
           expand.current?.focus({ preventScroll: true });
         }}
@@ -178,11 +192,43 @@ export function ProjectGallery({
           >
             <X />
           </button>
-          <ProjectVisual
-            image={current}
-            theme={theme}
-            available={availableImages.includes(current.path)}
-          />
+          {theme === "luria" ? (
+            <>
+              <button
+                className="luria-detail-toggle"
+                aria-pressed={detailZoom}
+                onClick={() => setDetailZoom((value) => !value)}
+              >
+                {detailZoom ? "Ver imagem inteira" : "Ampliar detalhes"}
+              </button>
+              <div
+                className={`luria-lightbox-viewport${detailZoom ? " luria-lightbox-zoomed" : ""}`}
+                tabIndex={0}
+                role="region"
+                aria-label="Screenshot do LURIA; role para explorar quando ampliada"
+                onKeyDown={(event) => {
+                  if (
+                    detailZoom &&
+                    (event.key === "ArrowLeft" || event.key === "ArrowRight")
+                  )
+                    event.stopPropagation();
+                }}
+              >
+                <ProjectVisual
+                  image={current}
+                  theme={theme}
+                  available={availableImages.includes(current.path)}
+                  sizes="2880px"
+                />
+              </div>
+            </>
+          ) : (
+            <ProjectVisual
+              image={current}
+              theme={theme}
+              available={availableImages.includes(current.path)}
+            />
+          )}
           {controls()}
         </div>
       </dialog>

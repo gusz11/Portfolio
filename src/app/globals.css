@@ -2,6 +2,7 @@
 @import "../styles/animations.css";
 @import "../styles/ondefica.css";
 @import "../styles/garago-gallery.css";
+@import "../styles/luria.css";
 
 @theme inline {
   --color-background: #09090f;

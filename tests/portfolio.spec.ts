@@ -11,6 +11,278 @@ const routes = [
 ];
 const widths = [320, 375, 390, 768, 1024, 1440, 1920];
 
+test("LURIA: dezesseis capturas reais, sequência editorial e zoom legível", async ({
+  page,
+  request,
+}) => {
+  test.setTimeout(150000);
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  const luria = projects.find(({ slug }) => slug === "luria")!;
+  expect(luria.gallery.map(({ label }) => label)).toEqual([
+    "Dashboard",
+    "Central de aplicativos",
+    "Aprender",
+    "Professor Alex",
+    "Simulador de emergência",
+    "Simulação clínica",
+    "Cronograma",
+    "Consolidar",
+    "Questões e simulados",
+    "Caderno de erros",
+    "Flashcards",
+    "Revisão de flashcard",
+    "Estatísticas",
+    "Detalhes do desempenho",
+    "Jogos",
+    "Modo Trabalho",
+  ]);
+  for (const screen of luria.gallery) {
+    const response = await request.get(screen.path);
+    expect(response.status()).toBe(200);
+    expect(response.headers()["content-type"]).toContain("image/png");
+  }
+  for (const width of [390, 768, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/projetos/luria");
+    const panel = page.locator(".luria-gallery-slide");
+    await expect(page.locator(".gallery-thumbnails button")).toHaveCount(16);
+    for (let index = 0; index < luria.gallery.length; index++) {
+      const screen = luria.gallery[index];
+      await page.locator(".gallery-thumbnails button").nth(index).click();
+      await expect(panel.getByRole("heading", { level: 3 })).toHaveText(
+        screen.presentation!.title,
+      );
+      await expect(panel.locator(".luria-gallery-environment")).toHaveText(
+        screen.presentation!.note,
+      );
+      const image = panel.locator("img");
+      await expect(image).toHaveAttribute("alt", screen.alt);
+      await image.scrollIntoViewIfNeeded();
+      await expect
+        .poll(() =>
+          image.evaluate((element: HTMLImageElement) => element.naturalWidth),
+        )
+        .toBeGreaterThan(0);
+      const geometry = await panel.evaluate((element) => {
+        const panel = element.getBoundingClientRect();
+        const frame = element
+          .querySelector(".luria-window")!
+          .getBoundingClientRect();
+        const copy = element
+          .querySelector(".luria-gallery-editorial")!
+          .getBoundingClientRect();
+        const image = element.querySelector("img") as HTMLImageElement;
+        const bounds = image.getBoundingClientRect();
+        return {
+          frameWidth: frame.width / panel.width,
+          frameTop: frame.top,
+          copyBottom: copy.bottom,
+          frameLeft: frame.left,
+          copyRight: copy.right,
+          fit: getComputedStyle(image).objectFit,
+          ratio: bounds.width / bounds.height,
+          naturalRatio: image.naturalWidth / image.naturalHeight,
+          overflow: document.documentElement.scrollWidth > innerWidth + 1,
+        };
+      });
+      expect(geometry.fit).toBe("contain");
+      expect(geometry.ratio).toBeCloseTo(2880 / 2000, 2);
+      expect(geometry.naturalRatio).toBeCloseTo(2880 / 2000, 2);
+      expect(geometry.overflow).toBe(false);
+      if (width >= 768) {
+        expect(geometry.frameWidth).toBeGreaterThan(0.6);
+        expect(geometry.frameWidth).toBeLessThan(0.72);
+        expect(geometry.frameLeft).toBeGreaterThan(geometry.copyRight);
+      } else {
+        expect(geometry.frameWidth).toBeGreaterThan(0.85);
+        expect(geometry.frameTop).toBeGreaterThan(geometry.copyBottom);
+      }
+      if ([0, 5, 15].includes(index))
+        await panel.screenshot({
+          path: `test-results/screenshots/luria-real-${width}-${index + 1}.png`,
+          style:
+            ".site-header, .skip-link, .scroll-progress, .back-to-top { visibility: hidden; }",
+        });
+    }
+    const expand = page.locator(".gallery-expand");
+    await expand.click();
+    const dialog = page.getByRole("dialog", {
+      name: "Imagem ampliada do projeto",
+    });
+    await expect(dialog).toBeVisible();
+    await expect(
+      dialog.locator(".luria-window, .luria-gallery-slide"),
+    ).toHaveCount(0);
+    await expect(dialog.locator("img")).toHaveAttribute(
+      "alt",
+      luria.gallery[15].alt,
+    );
+    await dialog.getByRole("button", { name: "Ampliar detalhes" }).click();
+    const viewport = dialog.getByRole("region");
+    const zoom = await viewport.evaluate((element) => {
+      element.scrollLeft = 100;
+      return {
+        wider: element.scrollWidth > element.clientWidth,
+        scroll: element.scrollLeft,
+        pageOverflow: document.documentElement.scrollWidth > innerWidth + 1,
+      };
+    });
+    expect(zoom.wider).toBe(true);
+    expect(zoom.scroll).toBeGreaterThan(0);
+    expect(zoom.pageOverflow).toBe(false);
+    if (width === 390)
+      await dialog.screenshot({
+        path: "test-results/screenshots/luria-details-zoom-390.png",
+      });
+    await dialog.getByRole("button", { name: "Ver imagem inteira" }).click();
+    await dialog.getByRole("button", { name: "Próxima imagem" }).focus();
+    await page.keyboard.press("ArrowRight");
+    await expect(dialog.locator("img")).toHaveAttribute(
+      "alt",
+      luria.gallery[0].alt,
+    );
+    await page.keyboard.press("Tab");
+    await expect(
+      dialog.getByRole("button", { name: "Fechar imagem ampliada" }),
+    ).toBeFocused();
+    const accessibility = await new AxeBuilder({ page })
+      .include(".luria-gallery-dialog")
+      .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+      .analyze();
+    expect(accessibility.violations).toEqual([]);
+    await dialog.screenshot({
+      path: `test-results/screenshots/luria-lightbox-${width}.png`,
+    });
+    await page.keyboard.press("Escape");
+    await expect(dialog).not.toBeVisible();
+    await expect(expand).toBeFocused();
+    await expect(page.locator("body")).not.toHaveCSS("overflow", "hidden");
+  }
+});
+
+test("LURIA: capa autêntica na home e no caso, sete larguras e atribuições fiéis", async ({
+  page,
+}) => {
+  test.setTimeout(60000);
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  for (const width of widths) {
+    await page.setViewportSize({ width, height: 900 });
+    for (const home of [true, false]) {
+      await page.goto(home ? "/#projetos" : "/projetos/luria");
+      const cover = page.locator(
+        home ? ".card-luria .luria-cover" : ".case-hero .luria-cover",
+      );
+      await cover.scrollIntoViewIfNeeded();
+      await expect(cover.locator("img")).toHaveCount(2);
+      await expect(cover.locator(".demo-disclaimer")).toHaveCount(0);
+      await expect(cover.locator(".luria-cover-primary img")).toHaveAttribute(
+        "alt",
+        /Dashboard/,
+      );
+      await expect(cover.locator(".luria-cover-secondary img")).toHaveAttribute(
+        "alt",
+        /Cronograma semanal/,
+      );
+      await expect(cover.locator(".luria-cover-secondary img")).toHaveAttribute(
+        "src",
+        /03-cronograma\.png/,
+      );
+      const secondaryRatio = await cover.evaluate((element) => {
+        const secondary = element.querySelector(
+          ".luria-cover-secondary",
+        ) as HTMLElement;
+        return secondary.offsetWidth / element.clientWidth;
+      });
+      expect(secondaryRatio).toBeGreaterThan(
+        !home && width >= 768 ? 0.39 : 0.41,
+      );
+      for (const image of await cover.locator("img").all()) {
+        await expect
+          .poll(() =>
+            image.evaluate((element: HTMLImageElement) => element.naturalWidth),
+          )
+          .toBeGreaterThan(0);
+        await expect(image).toHaveCSS("object-fit", "contain");
+      }
+      const geometry = await cover.evaluate((element) => {
+        const root = element.getBoundingClientRect();
+        return [
+          ...element.querySelectorAll(
+            ".luria-cover-primary, .luria-cover-secondary",
+          ),
+        ].map((item) => {
+          const frame = item.getBoundingClientRect();
+          return (
+            frame.left >= root.left &&
+            frame.right <= root.right &&
+            frame.top >= root.top &&
+            frame.bottom <= root.bottom
+          );
+        });
+      });
+      expect(geometry).toEqual([true, true]);
+      if ([390, 768, 1440].includes(width))
+        await cover.screenshot({
+          path: `test-results/screenshots/luria-${home ? "card" : "cover"}-${width}.png`,
+          style:
+            ".site-header, .skip-link, .scroll-progress, .back-to-top { visibility: hidden; }",
+        });
+    }
+  }
+  await expect(page.locator(".case-overview")).toContainText(
+    "Minha contribuição se concentrou",
+  );
+  await expect(page.locator("main")).toContainText(
+    "não representa a criação integral",
+  );
+  await expect(page.locator("main")).toContainText("CSP");
+  for (const [label, href] of [
+    ["Ver código", "https://github.com/arantes225/luria"],
+    ["Acessar aplicação", "https://www.resibulando.online"],
+  ]) {
+    const link = page.getByRole("link", { name: new RegExp(`^${label}`) });
+    await expect(link).toHaveAttribute("href", href);
+    await expect(link).toHaveAttribute("target", "_blank");
+    await expect(link).toHaveAttribute("rel", /noopener/);
+  }
+});
+
+test("LURIA: capturas existem sem JavaScript e falhas têm fallback identificado", async ({
+  browser,
+  baseURL,
+  page,
+}) => {
+  const context = await browser.newContext({
+    baseURL,
+    javaScriptEnabled: false,
+  });
+  try {
+    const noScriptPage = await context.newPage();
+    await noScriptPage.goto("/projetos/luria");
+    await expect(
+      noScriptPage.locator(".case-hero .luria-cover img"),
+    ).toHaveCount(2);
+    await expect(noScriptPage.locator(".luria-gallery-slide h3")).toHaveText(
+      "Seu dia de estudos.",
+    );
+  } finally {
+    await context.close();
+  }
+  await page.route("**/_next/image?*", async (route) => {
+    const image = new URL(route.request().url()).searchParams.get("url");
+    if (image?.endsWith("/luria/01-dashboard.png")) await route.abort();
+    else await route.continue();
+  });
+  await page.goto("/projetos/luria");
+  await expect(page.locator(".case-hero .demo-disclaimer")).toHaveText(
+    "Demonstração visual",
+  );
+  await page.locator(".gallery-stage").scrollIntoViewIfNeeded();
+  await expect(page.locator(".gallery-stage .demo-disclaimer")).toHaveText(
+    "Demonstração visual",
+  );
+});
+
 test("home, filtros e links válidos", async ({ page }) => {
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
@@ -295,9 +567,10 @@ test("dados profissionais, atribuições e links atualizados", async ({
   await expect(
     page.getByRole("link", { name: /Acessar aplicação/ }),
   ).toHaveAttribute("href", "https://www.resibulando.online");
-  await expect(
-    page.getByRole("link", { name: /^Repositório/ }),
-  ).toHaveAttribute("href", "https://github.com/arantes225/luria");
+  await expect(page.getByRole("link", { name: /^Ver código/ })).toHaveAttribute(
+    "href",
+    "https://github.com/arantes225/luria",
+  );
   await page.goto("/projetos/ondefica");
   await expect(page.locator(".case-stack")).toContainText("React Native");
   await expect(page.locator(".case-stack")).toContainText("Python");

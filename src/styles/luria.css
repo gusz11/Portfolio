@@ -1,0 +1,265 @@
+/* LURIA only. Blue tokens confirmed against the platform's public CSS. */
+.luria-cover,
+.gallery-luria {
+  --luria-blue: #184888;
+  --luria-ink: #10243e;
+  --luria-paper: #e7eef7;
+  --luria-secondary: #415975;
+  --luria-pink: #e85d9e;
+  --luria-line: #b3c7df;
+}
+.case-study.case-luria {
+  --case-accent: #7fa6d1;
+}
+.project-visual.luria-cover {
+  background: var(--luria-paper);
+  color: var(--luria-ink);
+}
+.luria-cover-stage {
+  position: absolute;
+  inset: 0;
+}
+.luria-cover-brand {
+  position: absolute;
+  top: 4%;
+  left: 6%;
+  right: 6%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  color: var(--luria-blue);
+}
+.luria-cover-brand > span {
+  font:
+    650 3.3cqw/1.2 var(--font-display),
+    sans-serif;
+  letter-spacing: -0.05em;
+}
+.luria-cover-brand p {
+  font-size: 1.6cqw;
+  padding-left: 1.2cqw;
+  border-left: 0.35cqw solid var(--luria-pink);
+}
+.luria-cover-primary {
+  position: absolute;
+  left: 6%;
+  top: 12%;
+  width: 74%;
+  transform: rotate(-2deg);
+}
+.luria-cover-secondary {
+  position: absolute;
+  right: 4%;
+  bottom: 5%;
+  width: 42%;
+  transform: rotate(3deg);
+}
+.luria-window {
+  min-width: 0;
+  align-self: center;
+  border: 1px solid #304c70;
+  border-radius: 0.9cqw;
+  overflow: hidden;
+  background: #07111f;
+  box-shadow: 0.8cqw 1.4cqw 2.7cqw #10243e29;
+}
+.luria-window-chrome {
+  display: flex;
+  align-items: center;
+  gap: 1cqw;
+  height: clamp(16px, 2.2cqw, 30px);
+  padding-inline: 1cqw;
+  background: #142a44;
+  color: #d9e6f7;
+  font-size: clamp(6px, 0.95cqw, 12px);
+}
+.luria-window-dots {
+  display: flex;
+  gap: 0.35cqw;
+}
+.luria-window-dots i {
+  width: 0.45cqw;
+  height: 0.45cqw;
+  min-width: 2px;
+  min-height: 2px;
+  border-radius: 50%;
+  background: #7fa6d1;
+}
+.luria-window-dots i:last-child {
+  background: #e85d9e;
+}
+.luria-cover-screenshot {
+  position: relative;
+  aspect-ratio: 2880 / 2000;
+}
+.luria-cover-screenshot img {
+  object-fit: contain;
+}
+.case-luria .case-hero .luria-cover {
+  container-type: inline-size;
+}
+.case-luria .luria-cover-primary {
+  width: 60%;
+  left: 8%;
+  top: 12%;
+  transform: rotate(-1.5deg);
+}
+.case-luria .luria-cover-secondary {
+  width: 40%;
+  right: 5%;
+  bottom: 7%;
+}
+.gallery-luria .gallery-stage {
+  touch-action: pan-y pinch-zoom;
+}
+.gallery-luria .gallery-stage .luria-gallery-slide {
+  display: grid;
+  grid-template-columns: minmax(0, 27fr) minmax(0, 70fr);
+  gap: 3%;
+  padding: 3%;
+  aspect-ratio: auto;
+  background: var(--luria-paper);
+  color: var(--luria-ink);
+}
+.luria-gallery-editorial {
+  min-width: 0;
+  align-self: center;
+}
+.luria-gallery-environment {
+  font-size: clamp(11px, 1.05cqw, 14px);
+  color: var(--luria-blue);
+  font-weight: 650;
+  margin-bottom: 1.5cqw;
+}
+.luria-gallery-editorial h3 {
+  font-size: clamp(25px, 3cqw, 40px);
+  line-height: 1.15;
+  letter-spacing: -0.055em;
+  max-width: 12ch;
+}
+.luria-gallery-description {
+  color: var(--luria-secondary);
+  font-size: clamp(13px, 1.25cqw, 17px);
+  line-height: 1.7;
+  margin-top: 1.5cqw;
+  max-width: 30ch;
+}
+.luria-gallery-slide .luria-window .project-visual {
+  border-radius: 0;
+  background: #07111f;
+}
+.gallery-dialog.luria-gallery-dialog {
+  width: min(1720px, calc(100% - 24px));
+}
+.luria-gallery-dialog .lightbox-content {
+  padding-top: 0;
+}
+.luria-gallery-dialog .lightbox-close {
+  display: grid;
+  position: sticky;
+  top: 0;
+  margin: 0 0 12px auto;
+  z-index: 3;
+}
+.luria-detail-toggle {
+  display: block;
+  margin-bottom: 12px;
+  padding: 8px 14px;
+  min-height: 44px;
+  border: 1px solid #7fa6d1;
+  border-radius: 6px;
+  color: #d9e6f7;
+  background: #142a44;
+  font-size: 13px;
+}
+.luria-lightbox-viewport {
+  max-height: 70dvh;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+.luria-gallery-dialog .luria-lightbox-viewport .real-image.visual-luria {
+  width: 100%;
+  max-width: none;
+  border-radius: 0;
+  background: transparent;
+}
+.luria-gallery-dialog .luria-lightbox-zoomed .real-image.visual-luria {
+  width: max(1600px, 160%);
+}
+.luria-gallery-dialog .gallery-controls {
+  position: sticky;
+  bottom: 0;
+  background: #11111b;
+  z-index: 2;
+  padding-block: 14px 4px;
+}
+@media (max-width: 767px) {
+  .luria-cover-brand {
+    gap: 8px;
+  }
+  .luria-cover-brand p {
+    font-size: 1.8cqw;
+  }
+  .luria-cover-primary,
+  .case-luria .luria-cover-primary {
+    width: 74%;
+    left: 6%;
+    top: 14%;
+    transform: rotate(-2deg);
+  }
+  .case-luria .luria-cover-secondary {
+    width: 42%;
+    right: 4%;
+    bottom: 5%;
+  }
+  .gallery-luria .gallery-stage .luria-gallery-slide {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 24px 16px 16px;
+  }
+  .luria-gallery-environment {
+    max-width: calc(100% - 52px);
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
+  .luria-gallery-editorial h3 {
+    font-size: 28px;
+    max-width: none;
+  }
+  .luria-gallery-description {
+    font-size: 14px;
+    max-width: 42ch;
+    margin-top: 12px;
+  }
+  .luria-window {
+    width: 100%;
+    border-radius: 6px;
+  }
+  .luria-window-chrome {
+    height: 22px;
+    padding-inline: 8px;
+    font-size: 9px;
+    gap: 8px;
+  }
+  .luria-cover .luria-window-chrome {
+    height: 12px;
+    font-size: 5px;
+    gap: 4px;
+    padding-inline: 4px;
+  }
+  .luria-window-dots {
+    gap: 3px;
+  }
+  .luria-window-dots i {
+    width: 3px;
+    height: 3px;
+  }
+  .luria-cover .luria-window-dots i {
+    width: 2px;
+    height: 2px;
+    min-width: 2px;
+    min-height: 2px;
+  }
+}

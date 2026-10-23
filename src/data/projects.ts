@@ -82,6 +82,156 @@ const garagoGallery: ProjectImage[] = [
   ),
 ];
 
+function luriaScreen(
+  file: string,
+  label: string,
+  title: string,
+  description: string,
+  environment: string,
+  alt: string,
+): ProjectImage {
+  return {
+    path: `/images/projects/luria/${file}.png`,
+    label,
+    alt,
+    width: 2880,
+    height: 2000,
+    presentation: { title, description, note: environment },
+  };
+}
+
+// Sequence follows the learner's journey, not just the original filenames.
+const luriaGallery: ProjectImage[] = [
+  luriaScreen(
+    "01-dashboard",
+    "Dashboard",
+    "Seu dia de estudos.",
+    "Atividades do dia, sessão guiada, revisões pendentes e progresso por área reunidos no dashboard.",
+    "Visão geral / Estudos",
+    "Dashboard escuro do LURIA com atividades do dia, sessão de estudo, revisões de flashcards e progresso por área",
+  ),
+  luriaScreen(
+    "02-central-aplicativos",
+    "Central de aplicativos",
+    "Os caminhos do estudo.",
+    "A central organiza os acessos a materiais, revisão, prática, simulação e acompanhamento de desempenho.",
+    "Navegação / Estudos",
+    "Central de aplicativos do LURIA com atalhos agrupados para estudar, revisar, praticar e acompanhar o desempenho",
+  ),
+  luriaScreen(
+    "04-aprender",
+    "Aprender",
+    "Escolha como aprender.",
+    "A área Aprender reúne o Professor Alex, apostilas, anotações pessoais e o acesso ao LuriaZap.",
+    "Aprendizagem / Estudos",
+    "Área Aprender do LURIA com campo de pergunta ao Professor Alex e acessos a apostilas, anotações e LuriaZap",
+  ),
+  luriaScreen(
+    "08-professor-alex",
+    "Professor Alex",
+    "Uma conversa para aprender.",
+    "A interface apresenta conversa por texto e voz, envio de material e modos de dúvida rápida ou aula completa.",
+    "Professor Alex / Estudos",
+    "Tela do Professor Alex no LURIA com assistente ilustrado, modos de conversa, chat e controles de texto, voz e anexo",
+  ),
+  luriaScreen(
+    "09-simulador-emergencia",
+    "Simulador de emergência",
+    "Da teoria ao cenário.",
+    "O simulador apresenta casos educacionais, com filtros de especialidade e dificuldade e acesso à sala de emergência.",
+    "Casos / Simulação",
+    "Lista de casos educacionais do simulador de emergência do LURIA com filtros e cartões de pacientes simulados",
+  ),
+  luriaScreen(
+    "15-simulacao-clinica",
+    "Simulação clínica",
+    "O caso em primeiro plano.",
+    "O cenário reúne paciente simulado, monitor de sinais, prontuário e acessos à anamnese, exames e intervenções.",
+    "Sala de emergência / Simulação",
+    "Cenário educacional do LURIA com paciente simulado em leito, monitor de sinais, prontuário e menu de avaliação e intervenções",
+  ),
+  luriaScreen(
+    "03-cronograma",
+    "Cronograma",
+    "Uma rotina organizada.",
+    "A visão semanal distribui aulas e revisões por categoria e mostra tempo de estudo. A captura indica que a conexão ao Google Agenda ainda requer configuração.",
+    "Planejamento / Estudos",
+    "Cronograma semanal do LURIA com atividades por categoria, filtros, tempo de estudo e aviso de configuração pendente do Google Agenda",
+  ),
+  luriaScreen(
+    "13-consolidar",
+    "Consolidar",
+    "Revisão encontra prática.",
+    "A área Consolidar conecta questões e simulados, flashcards e caderno de erros para retomar conteúdos.",
+    "Consolidação / Estudos",
+    "Área Consolidar do LURIA com acessos a questões e simulados, revisão de flashcards e caderno de erros",
+  ),
+  luriaScreen(
+    "06-questoes-simulados",
+    "Questões e simulados",
+    "Praticar e acompanhar.",
+    "A tela reúne questões do dia, listas em andamento, métricas da semana e opções de criação, envio e biblioteca.",
+    "Prática / Estudos",
+    "Questões e Simulados do LURIA com seleção do dia, listas em andamento e painel de respostas, acertos e erros",
+  ),
+  luriaScreen(
+    "07-caderno-erros",
+    "Caderno de erros",
+    "Um erro, uma revisão.",
+    "Os cadernos organizam dificuldades por área, com busca, revisão diária e acompanhamento das revisões.",
+    "Revisão / Estudos",
+    "Caderno de Erros do LURIA com revisão diária, busca de cadernos, áreas médicas e métricas de revisão",
+  ),
+  luriaScreen(
+    "05-flashcards",
+    "Flashcards",
+    "Revisar no seu ritmo.",
+    "Revisões pendentes, decks por tema e métricas da semana ajudam a visualizar o que retomar nos estudos.",
+    "Memória / Estudos",
+    "Painel de flashcards do LURIA com revisões do dia, decks por especialidade e métricas semanais",
+  ),
+  luriaScreen(
+    "14-revisao-flashcard",
+    "Revisão de flashcard",
+    "Uma pergunta por vez.",
+    "A sessão apresenta a frente do cartão, a ação de mostrar a resposta e controles de tempo, tela cheia e Pomodoro.",
+    "Sessão de revisão / Estudos",
+    "Sessão de revisão do LURIA com pergunta de flashcard, botão Mostrar resposta e controles de tempo e Pomodoro",
+  ),
+  luriaScreen(
+    "10-estatisticas",
+    "Estatísticas",
+    "Enxergar a evolução.",
+    "O painel reúne tempo estudado, consistência, progresso de aulas e resultados de questões e revisões por período.",
+    "Desempenho / Estudos",
+    "Estatísticas do LURIA com seleção de período e indicadores de tempo, consistência, aulas, questões e flashcards",
+  ),
+  luriaScreen(
+    "11-estatisticas-detalhes",
+    "Detalhes do desempenho",
+    "Os hábitos em detalhe.",
+    "Ritmo de estudo, mapa de calor, insights e visão por área complementam os indicadores gerais.",
+    "Hábitos / Estudos",
+    "Detalhes das estatísticas do LURIA com frequência, mapa de calor semanal, insights e tabela por área médica",
+  ),
+  luriaScreen(
+    "12-jogos",
+    "Jogos",
+    "Outra forma de praticar.",
+    "A tela apresenta quatro propostas de desafios clínicos. Study Rats é identificado como beta demonstrativo, com bots e perguntas interativas.",
+    "Desafios / Estudos",
+    "Área de jogos do LURIA com Study Rats em beta demonstrativo, Plantão Relâmpago, Sequência Salvadora e Escapando do Plantão",
+  ),
+  luriaScreen(
+    "16-modo-trabalho",
+    "Modo Trabalho",
+    "Outro ambiente, a mesma linguagem.",
+    "O dashboard de trabalho reúne atalhos para PCR, consulta, prescrição, calculadoras e organização da rotina clínica.",
+    "Ferramentas / Trabalho",
+    "Modo Trabalho do LURIA com destaque rosa para PCR e atalhos de consulta, prescrição, calculadoras e gestão de plantões",
+  ),
+];
+
 const ondeFicaGallery: ProjectImage[] = [
   {
     path: "/images/projects/ondefica/01-explorar.jpg",
@@ -134,6 +284,7 @@ export const projects: Project[] = [
     role: "Engenharia de frontend, UX/UI e segurança",
     stack: ["HTML", "CSS", "JavaScript"],
     cover: shot("luria", "cover", "Plataforma educacional e simulação médica"),
+    coverComposition: { primary: luriaGallery[0], secondary: luriaGallery[6] },
     overview:
       "O LURIA é uma plataforma educacional voltada à formação médica, com ambientes de estudo, trabalho e simulação. Minha contribuição se concentrou na definição e evolução da identidade visual, no design e desenvolvimento de interfaces e em melhorias de funcionalidades e segurança frontend.",
     problem:
@@ -170,13 +321,9 @@ export const projects: Project[] = [
       "Continuar a padronização entre os ambientes.",
       "Aprofundar validações de navegação, responsividade e segurança.",
     ],
-    gallery: [
-      shot("luria", "dashboard", "Visão do ambiente"),
-      shot("luria", "simulator", "Simulador de emergência"),
-      shot("luria", "education", "Recursos de aprendizagem"),
-    ],
+    gallery: luriaGallery,
     links: [
-      { label: "Repositório", href: "https://github.com/arantes225/luria" },
+      { label: "Ver código", href: "https://github.com/arantes225/luria" },
       { label: "Acessar aplicação", href: "https://www.resibulando.online" },
     ],
   },

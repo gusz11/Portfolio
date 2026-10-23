@@ -19,6 +19,12 @@
   }
 }
 @media (prefers-reduced-motion: no-preference) {
+  .luria-cover-stage {
+    transition: transform 0.5s;
+  }
+  .project-cover-link:hover .luria-cover-stage {
+    transform: translateY(-2px);
+  }
   .garago-cover-stage {
     transition: transform 0.5s;
   }
